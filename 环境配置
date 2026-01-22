@@ -1,0 +1,18 @@
+1、#安装智谱AI库
+pip install zhipuai
+
+2、#需要注意的是安装过程中需要升级pip版本
+python -m pip install --upgrade pip -i https://pypi.org/simple
+
+3、#如果在安装过程中提示有依赖库没有安装成功
+# 先卸载
+pip uninstall zhipuai -y
+# 重新安装（会安装所有依赖）
+pip install zhipuai[all] -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+
+
+3、#pip的定义与介绍
+#pip是python的包管理器，相当于是你手机里的应用商店
+pip install #安装
+pip uninstall #卸载
