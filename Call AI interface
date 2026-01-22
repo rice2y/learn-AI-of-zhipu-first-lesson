@@ -1,0 +1,68 @@
+# first_ai.py - 你的第一个智谱AI程序
+import os
+from zhipuai import ZhipuAI
+
+def main():
+    print(" 智谱AI 入门程序")
+    print("=" * 50)
+    
+    # 方法1：直接在代码中设置API Key
+    # api_key = "你的实际API_Key"
+    
+    # 方法2：从环境变量读取（推荐）
+    api_key = os.getenv("ZHIPUAI_API_KEY")
+    
+    if not api_key:
+        print("  未找到API Key")
+        print("请选择设置方式：")
+        print("1. 在代码中直接设置（测试用）")
+        print("2. 使用环境变量（生产环境推荐）")
+        
+        choice = input("\n请选择 (1 或 2): ")
+        
+        if choice == "1":
+            api_key = input("请输入你的API Key: ").strip()
+        elif choice == "2":
+            print("\n请创建 .env 文件，内容：")
+            print("ZHIPUAI_API_KEY=你的API_Key")
+            print("然后重新运行程序")
+            return
+        else:
+            print("无效选择")
+            return
+    
+    # 创建客户端
+    client = ZhipuAI(api_key=api_key)
+    
+    print(f"\n API Key 设置成功！长度: {len(api_key)}")
+    print("正在连接智谱AI...")
+    
+    # 第一次测试对话
+    try:
+        response = client.chat.completions.create(
+            model="glm-4",  # 使用最新模型
+            messages=[
+                {"role": "user", "content": "你好，我现在正在学习调用AI接口，目前来看已经达到了较好的效果，现在请你给出AI学习的一些方法，和我接下来学习需要注意的地方。"}
+            ],
+            max_tokens=100,
+            temperature=0.7
+        )
+        
+        ai_reply = response.choices[0].message.content
+        usage = response.usage
+        
+        print(f"\n AI回复: {ai_reply}")
+        print(f"\n 使用统计:")
+        print(f"   输入Token数: {usage.prompt_tokens}")
+        print(f"   输出Token数: {usage.completion_tokens}")
+        print(f"   总Token数: {usage.total_tokens}")
+           
+    except Exception as e:
+        print(f" 连接失败: {e}")
+        print("可能的原因：")
+        print("1. API Key 错误")
+        print("2. 网络连接问题")
+        print("3. API Key 余额不足")
+
+if __name__ == "__main__":
+    main()
